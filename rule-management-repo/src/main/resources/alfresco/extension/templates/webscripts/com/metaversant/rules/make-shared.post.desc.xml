@@ -3,6 +3,6 @@
     <description>Converts a local rule to a shared rule by moving the existing rule set to Shared Rules and then creating a link in the specified folder.</description>
     <url>/metaversant/share-rule</url>
     <family>Rule Management</family>
-    <authentication>admin</authentication>
+    <authentication runas="admin">user</authentication>
     <format default="json"></format>
 </webscript>

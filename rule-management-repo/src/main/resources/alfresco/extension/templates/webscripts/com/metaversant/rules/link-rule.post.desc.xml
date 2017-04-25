@@ -4,6 +4,6 @@
     <url>/metaversant/link-rule</url>
     <url>/metaversant/link-rules</url>
     <family>Rule Management</family>
-    <authentication>admin</authentication>
+    <authentication runas="admin">user</authentication>
     <format default="json"></format>
 </webscript>

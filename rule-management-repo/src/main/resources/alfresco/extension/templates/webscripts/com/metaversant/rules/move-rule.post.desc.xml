@@ -4,6 +4,6 @@
     <url>/metaversant/move-rule</url>
     <url>/metaversant/move-rules</url>
     <family>Rule Management</family>
-    <authentication>admin</authentication>
+    <authentication runas="admin">user</authentication>
     <format default="json"></format>
 </webscript>
