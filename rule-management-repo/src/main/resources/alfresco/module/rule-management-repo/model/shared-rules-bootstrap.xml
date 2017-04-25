@@ -1,17 +1,17 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<!DOCTYPE xml>
-<view:view xmlns:view="http://www.alfresco.org/view/repository/1.0" xmlns:cm="http://www.alfresco.org/model/content/1.0" xmlns:sys="http://www.alfresco.org/model/system/1.0" xmlns:st="http://www.alfresco.org/model/site/1.0">
-
-    <view:reference view:pathref="/${spaces.company_home.childname}/${spaces.dictionary.childname}">
-        <view:associations>
-            <cm:contains>
-                <cm:folder>
-                    <view:properties>
-                        <cm:name>Shared Rules</cm:name>
-                    </view:properties>
-                </cm:folder>
-            </cm:contains>
-        </view:associations>
-    </view:reference>
-
+<?xml version="1.0" encoding="UTF-8"?>
+<view:view xmlns:view="http://www.alfresco.org/view/repository/1.0">
+    <cm:folder xmlns:view="http://www.alfresco.org/view/repository/1.0"
+               xmlns:app="http://www.alfresco.org/model/application/1.0"
+               xmlns:cm="http://www.alfresco.org/model/content/1.0" xmlns=""
+               view:childName="cm:Shared_x0020_Rules">
+        <view:aspects>
+            <app:uifacets/>
+        </view:aspects>
+        <view:properties>
+            <cm:name>${shared.rules.name}</cm:name>
+            <app:icon>space-icon-default</app:icon>
+            <cm:title>${shared.rules.name}</cm:title>
+            <cm:description>${shared.rules.description}</cm:description>
+        </view:properties>
+    </cm:folder>
 </view:view>

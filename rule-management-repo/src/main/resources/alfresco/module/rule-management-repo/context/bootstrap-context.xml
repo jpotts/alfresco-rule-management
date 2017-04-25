@@ -4,22 +4,33 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-    <!-- The bootstrap-context.xml file is used for patch definitions, importers, 
-		 workflow, and loading custom content models.  -->
-		 
-	<bean id="rule-management-repo-shared-rules-bootstrap" class="org.alfresco.repo.module.ImporterModuleComponent" parent="module.baseComponent">
-        <property name="moduleId" value="${project.artifactId}" />
-        <property name="name" value="rule-management-repo-shared-rules-bootstrap" />
-        <property name="description" value="Bootstraps Shared Rules folder" />
-        <property name="sinceVersion" value="0.1" />
-        <property name="importer" ref="spacesBootstrap" />
-        <property name="bootstrapViews">
+    <bean id="rule-management-repo.folderBootstrap.resourceBundle"
+          class="org.alfresco.i18n.ResourceBundleBootstrapComponent">
+        <property name="resourceBundles">
             <list>
-                <props>
-                    <prop key="path">/</prop>
-                    <prop key="location">alfresco/module/${project.artifactId}/model/shared-rules-bootstrap.xml</prop>
-                </props>
+                <value>alfresco.module.${project.artifactId}.messages.bootstrap-messages</value>
             </list>
+        </property>
+    </bean>
+
+    <bean id="rule-management-repo.folderBootstrap" class="org.alfresco.repo.admin.patch.impl.GenericBootstrapPatch" parent="basePatch">
+        <property name="id"><value>rule-management-repo.folderBootstrap</value></property>
+        <property name="description"><value>rule-management-repo.folderBootstrap.description</value></property>
+        <property name="fixesFromSchema"><value>0</value></property>
+        <property name="fixesToSchema"><value>${version.schema}</value></property>
+        <property name="targetSchema"><value>15000</value></property>
+        <property name="importerBootstrap">
+            <ref bean="spacesBootstrap" />
+        </property>
+        <property name="checkPath">
+            <value>/${spaces.company_home.childname}/${spaces.dictionary.childname}/cm:Shared_x0020_Rules</value>
+        </property>
+        <property name="bootstrapView">
+            <props>
+                <prop key="path">/${spaces.company_home.childname}/${spaces.dictionary.childname}</prop>
+                <prop key="location">alfresco/module/${project.artifactId}/model/shared-rules-bootstrap.xml</prop>
+                <prop key="messages">alfresco.module.${project.artifactId}.messages.bootstrap-messages</prop>
+            </props>
         </property>
     </bean>
     
