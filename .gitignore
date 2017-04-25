@@ -3,3 +3,4 @@ rule-management-repo/alf_data_dev
 rule-management-repo/target
 rule-management-share/.idea
 *.log
+rule-management-share/target

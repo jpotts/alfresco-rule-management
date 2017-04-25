@@ -1,5 +1,6 @@
 package com.metaversant.alfresco.webscripts;
 
+import com.metaversant.alfresco.rules.Utilities;
 import org.alfresco.repo.rule.RuleModel;
 import org.alfresco.service.cmr.repository.ChildAssociationRef;
 import org.alfresco.service.cmr.repository.NodeRef;
@@ -8,6 +9,7 @@ import org.alfresco.service.cmr.repository.StoreRef;
 import org.alfresco.service.cmr.search.ResultSet;
 import org.alfresco.service.cmr.search.SearchService;
 import org.alfresco.service.namespace.RegexQNamePattern;
+import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -30,6 +32,8 @@ public class MoveRules extends DeclarativeWebScript {
 
     private NodeService nodeService;
     private SearchService searchService;
+
+    private Logger logger = Logger.getLogger(MoveRules.class);
 
     @Override
     protected Map<String, Object> executeImpl(WebScriptRequest req, Status status, Cache cache) {
@@ -75,43 +79,13 @@ public class MoveRules extends DeclarativeWebScript {
                 continue;
             }
 
-            NodeRef ruleSource = getNodeRefFromPath(sourcePath); // "/app:company_home/cm:test/cm:rule-home"
-            NodeRef ruleTarget = getNodeRefFromPath(targetPath);
+            NodeRef ruleSource = Utilities.getNodeRefFromPath(searchService, sourcePath); // "/app:company_home/cm:test/cm:rule-home"
+            NodeRef ruleTarget = Utilities.getNodeRefFromPath(searchService, targetPath);
 
-            moveRules(ruleSource, ruleTarget);
+            Utilities.moveRules(nodeService, ruleSource, ruleTarget);
         }
 
         return model;
-    }
-
-    private void moveRules(NodeRef ruleSource, NodeRef ruleTarget) {
-
-        nodeService.addAspect(ruleTarget, RuleModel.ASPECT_RULES, null);
-        nodeService.removeChild(ruleTarget, getRuleFolder(ruleTarget));
-
-        NodeRef ruleFolder = getRuleFolder(ruleSource);
-        nodeService.moveNode(ruleFolder, ruleTarget, RuleModel.ASSOC_RULE_FOLDER, RuleModel.ASSOC_RULE_FOLDER);
-
-        nodeService.removeAspect(ruleSource, RuleModel.ASPECT_RULES);
-
-    }
-
-    private NodeRef getNodeRefFromPath(String path) {
-        ResultSet rs = searchService.query(StoreRef.STORE_REF_WORKSPACE_SPACESSTORE,
-                SearchService.LANGUAGE_FTS_ALFRESCO,
-                "PATH:\"" + path + "\"");
-        if (rs.length() <= 0) {
-            return null;
-        }
-        return rs.getNodeRef(0);
-    }
-
-    private NodeRef getRuleFolder(NodeRef target) {
-        List<ChildAssociationRef> assocs = nodeService.getChildAssocs(target, RuleModel.ASSOC_RULE_FOLDER, RegexQNamePattern.MATCH_ALL);
-        if (assocs.size() <= 0) {
-            return null;
-        }
-        return assocs.get(0).getChildRef();
     }
 
     public void setNodeService(NodeService nodeService) {

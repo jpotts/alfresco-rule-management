@@ -1,8 +1,10 @@
 package com.metaversant.alfresco.webscripts;
 
+import com.metaversant.alfresco.rules.Utilities;
 import org.alfresco.model.ContentModel;
 import org.alfresco.repo.policy.BehaviourFilter;
 import org.alfresco.repo.rule.RuleModel;
+import org.alfresco.repo.site.SiteModel;
 import org.alfresco.service.cmr.model.FileFolderService;
 import org.alfresco.service.cmr.repository.ChildAssociationRef;
 import org.alfresco.service.cmr.repository.NodeRef;
@@ -10,6 +12,8 @@ import org.alfresco.service.cmr.repository.NodeService;
 import org.alfresco.service.cmr.repository.StoreRef;
 import org.alfresco.service.cmr.search.ResultSet;
 import org.alfresco.service.cmr.search.SearchService;
+import org.alfresco.service.namespace.DynamicNamespacePrefixResolver;
+import org.alfresco.service.namespace.NamespaceService;
 import org.alfresco.service.namespace.QName;
 import org.alfresco.service.namespace.RegexQNamePattern;
 import org.json.JSONArray;
@@ -77,38 +81,14 @@ public class CreateRulesLink extends DeclarativeWebScript {
             return model;
         }
 
-        NodeRef ruleHome = getNodeRefFromPath(ruleHomePath); // "/app:company_home/cm:test/cm:rule-home"
+        NodeRef ruleHome = Utilities.getNodeRefFromPath(searchService, ruleHomePath); // "/app:company_home/cm:test/cm:rule-home"
 
         for (String targetPath : targetPathList) {
-            NodeRef nodeRef = getNodeRefFromPath(targetPath); // "/app:company_home/cm:test/cm:rule-child-2"
-            linkToRuleFolder(ruleHome, nodeRef);
+            NodeRef nodeRef = Utilities.getNodeRefFromPath(searchService, targetPath); // "/app:company_home/cm:test/cm:rule-child-2"
+            Utilities.linkToRuleFolder(nodeService, ruleHome, nodeRef);
         }
 
         return model;
-    }
-
-    private void linkToRuleFolder(NodeRef ruleHome, NodeRef nodeRef) {
-        nodeService.addAspect(nodeRef, RuleModel.ASPECT_RULES, null);
-        nodeService.removeChild(nodeRef, getRuleFolder(nodeRef));
-        nodeService.addChild(nodeRef, getRuleFolder(ruleHome), RuleModel.ASSOC_RULE_FOLDER, RuleModel.ASSOC_RULE_FOLDER);
-    }
-
-    private NodeRef getNodeRefFromPath(String path) {
-        ResultSet rs = searchService.query(StoreRef.STORE_REF_WORKSPACE_SPACESSTORE,
-                SearchService.LANGUAGE_FTS_ALFRESCO,
-                "PATH:\"" + path + "\"");
-        if (rs.length() <= 0) {
-            return null;
-        }
-        return rs.getNodeRef(0);
-    }
-
-    private NodeRef getRuleFolder(NodeRef target) {
-        List<ChildAssociationRef> assocs = nodeService.getChildAssocs(target, RuleModel.ASSOC_RULE_FOLDER, RegexQNamePattern.MATCH_ALL);
-        if (assocs.size() <= 0) {
-            return null;
-        }
-        return assocs.get(0).getChildRef();
     }
 
     public void setNodeService(NodeService nodeService) {
