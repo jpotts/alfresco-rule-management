@@ -21,4 +21,13 @@
         </property>
     </bean>
 
+    <bean id="webscript.com.metaversant.rules.make-shared.post" class="com.metaversant.alfresco.webscripts.ConvertToSharedRule" parent="webscript">
+        <property name="nodeService">
+            <ref bean="NodeService" />
+        </property>
+        <property name="searchService">
+            <ref bean="SearchService" />
+        </property>
+    </bean>
+
 </beans>
