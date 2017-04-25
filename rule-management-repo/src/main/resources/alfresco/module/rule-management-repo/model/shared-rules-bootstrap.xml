@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE xml>
+<view:view xmlns:view="http://www.alfresco.org/view/repository/1.0" xmlns:cm="http://www.alfresco.org/model/content/1.0" xmlns:sys="http://www.alfresco.org/model/system/1.0" xmlns:st="http://www.alfresco.org/model/site/1.0">
+
+    <view:reference view:pathref="/${spaces.company_home.childname}/${spaces.dictionary.childname}">
+        <view:associations>
+            <cm:contains>
+                <cm:folder>
+                    <view:properties>
+                        <cm:name>Shared Rules</cm:name>
+                    </view:properties>
+                </cm:folder>
+            </cm:contains>
+        </view:associations>
+    </view:reference>
+
+</view:view>
