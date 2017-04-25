@@ -1,0 +1,9 @@
+<webscript>
+    <shortname>Link Rule Folder</shortname>
+    <description>Add a link to the specified folder that points to the specified rule folder</description>
+    <url>/metaversant/link-rule</url>
+    <url>/metaversant/link-rules</url>
+    <family>Rule Management</family>
+    <authentication>admin</authentication>
+    <format default="json"></format>
+</webscript>

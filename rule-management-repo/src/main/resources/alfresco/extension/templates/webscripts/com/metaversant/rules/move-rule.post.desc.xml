@@ -1,0 +1,9 @@
+<webscript>
+    <shortname>Move Rules</shortname>
+    <description>Moves the rules defined in one folder to another folder</description>
+    <url>/metaversant/move-rule</url>
+    <url>/metaversant/move-rules</url>
+    <family>Rule Management</family>
+    <authentication>admin</authentication>
+    <format default="json"></format>
+</webscript>

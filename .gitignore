@@ -1,0 +1,5 @@
+rule-management-repo/.idea
+rule-management-repo/alf_data_dev
+rule-management-repo/target
+rule-management-share/.idea
+*.log
