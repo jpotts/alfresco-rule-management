@@ -54,6 +54,7 @@ public class ConvertToSharedRule extends DeclarativeWebScript {
 
         // check for required Data
         String sourceNodeRefString = null;
+        String sourceFolderName = null;
         try {
             if (ruleInfo.getString("nodeRef") == null) {
                 status.setCode(400, "Rule folder nodeRef is required");
@@ -62,6 +63,13 @@ public class ConvertToSharedRule extends DeclarativeWebScript {
             } else {
                 sourceNodeRefString = ruleInfo.getString("nodeRef");
             }
+            
+            if (ruleInfo.getString("sourceFolderName") != null) {
+            	sourceFolderName = ruleInfo.getString("sourceFolderName");
+            } else {
+            	//sourceFolderName = "";
+            }
+            
         } catch (JSONException je) {
             status.setCode(500, "Problem parsing JSON: " + je.getMessage());
             status.setRedirect(true);
@@ -82,10 +90,12 @@ public class ConvertToSharedRule extends DeclarativeWebScript {
         logger.debug("Got shared rules folder");
 
         // get the name of the source folder and use that as the name of the shared rule set
-        String sourceFolderName = (String) nodeService.getProperty(sourceNodeRef, ContentModel.PROP_NAME);
-
+        if (sourceFolderName == null)
+        {
+        	sourceFolderName = (String) nodeService.getProperty(sourceNodeRef, ContentModel.PROP_NAME);
+        }
         // TODO: Need to catch the case when this folder name already exists
-
+        
         Map<QName, Serializable> props = new HashMap<QName, Serializable>();
         props.put(ContentModel.PROP_NAME, sourceFolderName);
 
@@ -97,6 +107,7 @@ public class ConvertToSharedRule extends DeclarativeWebScript {
                 props
         );
         NodeRef ruleTarget = childRef.getChildRef();
+        
         logger.debug("Created new folder in Shared Rules for move");
 
         Utilities.moveRules(nodeService, sourceNodeRef, ruleTarget);

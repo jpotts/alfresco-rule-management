@@ -197,7 +197,7 @@
             -->
 
             <!-- Hot reloading with JRebel -->
-            <plugin>
+            <!--<plugin>
                 <groupId>org.zeroturnaround</groupId>
                 <artifactId>jrebel-maven-plugin</artifactId>
                 <version>${jrebel.version}</version>
@@ -210,29 +210,29 @@
                         </goals>
                     </execution>
                 </executions>
-                <configuration>
+                <configuration>-->
                     <!-- For more information about how to configure JRebel plugin see:
                          http://manuals.zeroturnaround.com/jrebel/standalone/maven.html#maven-rebel-xml -->
-                    <classpath>
+                    <!--<classpath>
                         <fallback>all</fallback>
                         <resources>
-                            <resource>
+                            <resource>-->
                                 <!--
                                 Empty resource element marks default configuration. By
                                 default it is placed first in generated configuration.
                                 -->
-                            </resource>
+                            <!--</resource>
                         </resources>
-                    </classpath>
+                    </classpath>-->
 
                     <!--
                       alwaysGenerate - default is false
                       If 'false' - rebel.xml is generated if timestamps of pom.xml and the current rebel.xml file are not equal.
                       If 'true' - rebel.xml will always be generated
                     -->
-                    <alwaysGenerate>true</alwaysGenerate>
+                    <!--<alwaysGenerate>true</alwaysGenerate>
                 </configuration>
-            </plugin>
+            </plugin>-->
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
