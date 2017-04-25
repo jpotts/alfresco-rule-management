@@ -1,0 +1,8 @@
+{
+  "ruleMoves": [
+    {
+      "sourcePath": "/app:company_home/app:dictionary/app:site_folder_templates/cm:some-folder",
+      "targetPath": "/app:company_home/app:dictionary/cm:Shared_x0020_Rules/cm:some-new-shared-folder"
+    }
+  ]
+}

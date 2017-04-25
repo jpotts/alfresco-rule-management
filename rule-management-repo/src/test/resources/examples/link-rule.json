@@ -1,0 +1,9 @@
+{
+  "ruleHomePath": "/app:company_home/app:dictionary/cm:Shared_x0020_Rules/cm:some-shared-rule-folder",
+  "targetPaths": [
+    "/app:company_home/st:sites/cm:test1/cm:documentLibrary",
+    "/app:company_home/st:sites/cm:test2/cm:documentLibrary",
+    "/app:company_home/st:sites/cm:test3/cm:documentLibrary",
+    "/app:company_home/st:sites/cm:test4/cm:documentLibrary",
+  ]
+}
