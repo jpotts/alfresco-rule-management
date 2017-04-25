@@ -22,7 +22,7 @@ import java.util.List;
 public class Utilities {
     private static Logger logger = Logger.getLogger(Utilities.class);
 
-    public static final String SHARED_RULES_PATH = "/app:company_home/app:dictionary/cm:Shared_x0020_Rules";
+    public static final String SHARED_RULES_PATH = "/app:company_home/app:dictionary/app:shared_rules";
 
     public static void linkToRuleFolder(NodeService nodeService, NodeRef ruleHome, NodeRef nodeRef) {
         nodeService.addAspect(nodeRef, RuleModel.ASPECT_RULES, null);
