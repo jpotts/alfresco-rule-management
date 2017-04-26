@@ -2,6 +2,16 @@
 
 This is an Alfresco hack-a-thon project intended to make it easier to manage folder rules.
 
+See it in action [here](https://www.youtube.com/watch?v=8L3siJu_T0A).
+
+This code started out as a one-off utility Metaversant built for a client. They allowed us to open source the code provided it would always be available for the community. At BeeCon 2017 Hack-a-thon, the following team kickstarted the project:
+
+* Francisco Guariba
+* Peter Lesty
+* Jeff Potts
+
+Hopefully you'll find it useful. There is a lot of functionality remaining that would make it even better. Pull requests are welcome!
+
 ## Description
 
 * Folder rules are a great feature, much-loved by Alfresco users.
@@ -9,12 +19,15 @@ This is an Alfresco hack-a-thon project intended to make it easier to manage fol
 * When users have many rule sets, comprised of many rules, scattered across the repository, it is often a manually-intensive task to:
   * Duplicate rule sets from one folder to one or more folders
   * Convert “local” rules to “shared” rules and vice versa
+  * Link a shared rule into one or more folders
 
 ## Goals
 
 1. Create a REST API to help with these rule management tasks
 1. Modify the Share rule configuration UI with additional rule management functionality
 1. Create a new admin console page for bulk rule management
+
+All of these goals are works-in-progress, although enough has been done already to make this add-on useful in its current state.
 
 ## API
 
