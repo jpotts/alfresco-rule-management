@@ -4,3 +4,4 @@ rule-management-repo/target
 rule-management-share/.idea
 *.log
 rule-management-share/target
+*.log.*
