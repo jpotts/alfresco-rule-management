@@ -29,6 +29,12 @@ Hopefully you'll find it useful. There is a lot of functionality remaining that 
 
 All of these goals are works-in-progress, although enough has been done already to make this add-on useful in its current state.
 
+## Security Considerations
+
+As the module currently exists, no special permissions are required to make a rule shared. And no special permissions are required to link a shared rule to a folder using the API shown below. This means that anyone can create a rule on any folder if they know the path of that folder. When the rule runs it will run using the permissions of the person invoking the action, but still, you may want to consider whether or not you are willing to let people create rules in folders they may not control.
+
+We can fix this by adding a new permission that can be assigned to a person or group, establishing that they have write access to the Shared rules folder. The Share customizations and the web scripts that implement the RESTful API would then check for that permission. But this is still a to do.
+
 ## API
 
 The end points that exist at the moment are:
