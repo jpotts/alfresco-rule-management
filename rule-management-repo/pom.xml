@@ -169,7 +169,6 @@
                 the layout of your AMP. The end result is that Maven will produce both a JAR file and an AMP with your
                 module.
             -->
-            <!--
             <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
                 <version>2.6</version>
@@ -194,7 +193,6 @@
                     </dependency>
                 </dependencies>
             </plugin>
-            -->
 
             <!-- Hot reloading with JRebel -->
             <!--<plugin>
