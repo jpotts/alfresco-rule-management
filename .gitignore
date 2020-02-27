@@ -5,3 +5,5 @@ rule-management-share/.idea
 *.log
 rule-management-share/target
 *.log.*
+.idea
+*.iml

@@ -30,4 +30,12 @@
         </property>
     </bean>
 
+    <bean id="webscript.com.metaversant.rules.get-rules.get" class="com.metaversant.alfresco.webscripts.GetRules" parent="webscript">
+        <property name="nodeService">
+            <ref bean="NodeService" />
+        </property>
+        <property name="searchService">
+            <ref bean="SearchService" />
+        </property>
+    </bean>
 </beans>
