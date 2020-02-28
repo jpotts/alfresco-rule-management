@@ -3,7 +3,6 @@ package com.metaversant.alfresco.webscripts;
 import com.metaversant.alfresco.rules.Utilities;
 import com.metaversant.alfresco.rules.model.RuleInfo;
 import com.metaversant.alfresco.rules.transformers.RuleNodeRefToRuleInfoTransformer;
-import org.alfresco.model.ContentModel;
 import org.alfresco.repo.rule.RuleModel;
 import org.alfresco.service.cmr.repository.ChildAssociationRef;
 import org.alfresco.service.cmr.repository.NodeRef;
@@ -24,7 +23,7 @@ import java.util.Map;
  * Created by jpotts, Metaversant on 2/27/20.
  */
 public class GetRules extends DeclarativeWebScript {
-    private Logger logger = Logger.getLogger(MoveRules.class);
+    private Logger logger = Logger.getLogger(GetRules.class);
 
     // Dependencies
     NodeService nodeService;
@@ -47,6 +46,10 @@ public class GetRules extends DeclarativeWebScript {
         NodeRef ruleFolderNodeRef = Utilities.getRuleFolder(nodeService, nodeRef);
         if (ruleFolderNodeRef != null) {
             model.put("ruleFolderNodeRef", ruleFolderNodeRef.toString());
+        } else {
+            // If there is no rule folder there are no rules
+            model.put("rules", null);
+            return model;
         }
 
         List<ChildAssociationRef> childNodeRefList = nodeService.getChildAssocs(ruleFolderNodeRef);
