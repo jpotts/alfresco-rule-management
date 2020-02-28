@@ -1,6 +1,7 @@
 package com.metaversant.alfresco.rules.transformers;
 
 import com.metaversant.alfresco.rules.model.ActionInfo;
+import org.alfresco.repo.action.ActionModel;
 import org.alfresco.service.cmr.repository.NodeRef;
 import org.alfresco.service.cmr.repository.NodeService;
 
@@ -10,6 +11,7 @@ import org.alfresco.service.cmr.repository.NodeService;
 public class ActionNodeRefToActionInfoTransformer {
     public static ActionInfo transform(NodeService nodeService, NodeRef nodeRef) {
         ActionInfo actionInfo = new ActionInfo();
+        actionInfo.setDefinitionName((String) nodeService.getProperty(nodeRef, ActionModel.PROP_DEFINITION_NAME));
         actionInfo.setParameters(ParameterInfoListTransformer.transform(nodeService, nodeRef));
         return actionInfo;
     }
