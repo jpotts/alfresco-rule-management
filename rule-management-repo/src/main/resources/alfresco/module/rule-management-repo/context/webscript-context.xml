@@ -3,7 +3,7 @@
 
 <beans>
 
-    <bean id="webscript.com.metaversant.rules.link-rule.post" class="com.metaversant.alfresco.webscripts.CreateRulesLink" parent="webscript">
+    <bean id="webscript.com.metaversant.rules.link-rule.post" class="com.metaversant.alfresco.rules.webscripts.CreateRulesLink" parent="webscript">
         <property name="nodeService">
             <ref bean="NodeService" />
         </property>
@@ -12,7 +12,7 @@
         </property>
     </bean>
 
-    <bean id="webscript.com.metaversant.rules.move-rule.post" class="com.metaversant.alfresco.webscripts.MoveRules" parent="webscript">
+    <bean id="webscript.com.metaversant.rules.move-rule.post" class="com.metaversant.alfresco.rules.webscripts.MoveRules" parent="webscript">
         <property name="nodeService">
             <ref bean="NodeService" />
         </property>
@@ -21,7 +21,7 @@
         </property>
     </bean>
 
-    <bean id="webscript.com.metaversant.rules.make-shared.post" class="com.metaversant.alfresco.webscripts.ConvertToSharedRule" parent="webscript">
+    <bean id="webscript.com.metaversant.rules.make-shared.post" class="com.metaversant.alfresco.rules.webscripts.ConvertToSharedRule" parent="webscript">
         <property name="nodeService">
             <ref bean="NodeService" />
         </property>
@@ -30,7 +30,7 @@
         </property>
     </bean>
 
-    <bean id="webscript.com.metaversant.rules.get-rules.get" class="com.metaversant.alfresco.webscripts.GetRules" parent="webscript">
+    <bean id="webscript.com.metaversant.rules.get-rules.get" class="com.metaversant.alfresco.rules.webscripts.GetRules" parent="webscript">
         <property name="nodeService">
             <ref bean="NodeService" />
         </property>

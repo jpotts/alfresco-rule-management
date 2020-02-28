@@ -1,6 +1,6 @@
-package com.metaversant.alfresco.webscripts;
+package com.metaversant.alfresco.rules.webscripts;
 
-import com.metaversant.alfresco.rules.Utilities;
+import com.metaversant.alfresco.rules.common.Utilities;
 import org.alfresco.model.ContentModel;
 import org.alfresco.service.cmr.repository.ChildAssociationRef;
 import org.alfresco.service.cmr.repository.NodeRef;
@@ -9,7 +9,6 @@ import org.alfresco.service.cmr.search.SearchService;
 import org.alfresco.service.namespace.NamespaceService;
 import org.alfresco.service.namespace.QName;
 import org.apache.log4j.Logger;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.extensions.webscripts.Cache;
@@ -18,13 +17,8 @@ import org.springframework.extensions.webscripts.Status;
 import org.springframework.extensions.webscripts.WebScriptRequest;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-
-import static com.metaversant.alfresco.rules.Utilities.getSharedRulesFolder;
-import static org.alfresco.events.types.DataType.Date;
 
 /**
  * This web script will turn a local rule into a shared rule.

@@ -1,15 +1,9 @@
-package com.metaversant.alfresco.webscripts;
+package com.metaversant.alfresco.rules.webscripts;
 
-import com.metaversant.alfresco.rules.Utilities;
-import org.alfresco.repo.rule.RuleModel;
-import org.alfresco.service.cmr.repository.ChildAssociationRef;
+import com.metaversant.alfresco.rules.common.Utilities;
 import org.alfresco.service.cmr.repository.NodeRef;
 import org.alfresco.service.cmr.repository.NodeService;
-import org.alfresco.service.cmr.repository.StoreRef;
-import org.alfresco.service.cmr.search.ResultSet;
 import org.alfresco.service.cmr.search.SearchService;
-import org.alfresco.service.namespace.RegexQNamePattern;
-import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -24,16 +18,14 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * This web script will move the rules that exist in a source folder to a target folder.
+ * This web script will create a link in the folder specified to the specified rule folder.
  *
  * Created by jpotts on 1/19/17.
  */
-public class MoveRules extends DeclarativeWebScript {
+public class CreateRulesLink extends DeclarativeWebScript {
 
     private NodeService nodeService;
     private SearchService searchService;
-
-    private Logger logger = Logger.getLogger(MoveRules.class);
 
     @Override
     protected Map<String, Object> executeImpl(WebScriptRequest req, Status status, Cache cache) {
@@ -50,14 +42,26 @@ public class MoveRules extends DeclarativeWebScript {
         JSONObject ruleInfo = (JSONObject) content;
 
         // check for required Data
-        JSONArray moveList = null;
+        String ruleHomePath = null;
+        List<String> targetPathList = new ArrayList<String>();
         try {
-            if (ruleInfo.getString("ruleMoves") == null) {
-                status.setCode(400, "List of rule moves is required");
+            if (ruleInfo.getString("ruleHomePath") == null) {
+                status.setCode(400, "Rule home path is required");
                 status.setRedirect(true);
                 return model;
             } else {
-                moveList = ruleInfo.getJSONArray("ruleMoves");
+                ruleHomePath = ruleInfo.getString("ruleHomePath");
+            }
+
+            if (ruleInfo.getJSONArray("targetPaths") == null) {
+                status.setCode(400, "A list of target paths is required");
+                status.setRedirect(true);
+                return model;
+            } else {
+                JSONArray jsonArray = ruleInfo.getJSONArray("targetPaths");
+                for (int i=0; i < jsonArray.length(); i++){
+                    targetPathList.add(jsonArray.get(i).toString());
+                }
             }
         } catch (JSONException je) {
             status.setCode(500, "Problem parsing JSON: " + je.getMessage());
@@ -65,24 +69,11 @@ public class MoveRules extends DeclarativeWebScript {
             return model;
         }
 
-        for (int i = 0; i < moveList.length(); i++) {
-            String sourcePath = null;
-            String targetPath = null;
-            try {
-                JSONObject obj = moveList.getJSONObject(i);
-                sourcePath = obj.getString("sourcePath");
-                targetPath = obj.getString("targetPath");
-                if (sourcePath == null || targetPath == null) {
-                    continue;
-                }
-            } catch (JSONException e) {
-                continue;
-            }
+        NodeRef ruleHome = Utilities.getNodeRefFromPath(searchService, ruleHomePath); // "/app:company_home/cm:test/cm:rule-home"
 
-            NodeRef ruleSource = Utilities.getNodeRefFromPath(searchService, sourcePath); // "/app:company_home/cm:test/cm:rule-home"
-            NodeRef ruleTarget = Utilities.getNodeRefFromPath(searchService, targetPath);
-
-            Utilities.moveRules(nodeService, ruleSource, ruleTarget);
+        for (String targetPath : targetPathList) {
+            NodeRef nodeRef = Utilities.getNodeRefFromPath(searchService, targetPath); // "/app:company_home/cm:test/cm:rule-child-2"
+            Utilities.linkToRuleFolder(nodeService, ruleHome, nodeRef);
         }
 
         return model;

@@ -1,6 +1,5 @@
-package com.metaversant.alfresco.rules;
+package com.metaversant.alfresco.rules.common;
 
-import com.metaversant.alfresco.webscripts.MoveRules;
 import org.alfresco.repo.rule.RuleModel;
 import org.alfresco.repo.site.SiteModel;
 import org.alfresco.service.cmr.repository.ChildAssociationRef;

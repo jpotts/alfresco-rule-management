@@ -1,7 +1,7 @@
-package com.metaversant.alfresco.webscripts;
+package com.metaversant.alfresco.rules.webscripts;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.metaversant.alfresco.rules.Utilities;
+import com.metaversant.alfresco.rules.common.Utilities;
 import com.metaversant.alfresco.rules.model.RuleInfo;
 import com.metaversant.alfresco.rules.transformers.RuleNodeRefToRuleInfoTransformer;
 import org.alfresco.repo.rule.RuleModel;
