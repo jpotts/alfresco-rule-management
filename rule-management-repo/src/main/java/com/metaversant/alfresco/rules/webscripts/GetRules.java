@@ -37,7 +37,11 @@ public class GetRules extends AbstractWebScript {
 
         // Grab the nodeRef from the request parameter
         String nodeRefStr = req.getParameter("nodeRef");
-        response.put("nodeRef", nodeRefStr);
+        String traverseStr = req.getParameter("traverse");
+        boolean traverse = false;
+        if (traverseStr != null && traverseStr.length() > 0 && "true".equals(traverseStr.toLowerCase())) {
+            traverse = true;
+        }
 
         // Make sure the specified nodeRef exists before continuing
         NodeRef nodeRef = new NodeRef(nodeRefStr);
@@ -51,7 +55,7 @@ public class GetRules extends AbstractWebScript {
         response.put("ignoreInheritedRules", ignoreInheritedRules);
 
         // Get the rule folder for this nodeRef
-        NodeRef ruleFolderNodeRef = Utilities.getRuleFolder(nodeService, nodeRef);
+        NodeRef ruleFolderNodeRef = Utilities.getRuleFolder(nodeService, nodeRef, traverse);
         if (ruleFolderNodeRef == null) {
             // If there is no rule folder there are no rules
             response.put("rules", null);
@@ -72,6 +76,10 @@ public class GetRules extends AbstractWebScript {
 
             // Set the model and return
             response.put("rules", ruleInfoList);
+
+            // Get the folder on which these rules are set (It could be different than the nodeRef requested
+            NodeRef folderNodeRef = nodeService.getPrimaryParent(ruleFolderNodeRef).getParentRef();
+            response.put("nodeRef", folderNodeRef.toString());
         }
 
         ObjectMapper mapper = new ObjectMapper();

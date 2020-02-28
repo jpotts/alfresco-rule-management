@@ -2,6 +2,7 @@
     <shortname>Get Rules</shortname>
     <description>Retrieves the rules for a specified folder node reference</description>
     <url>/metaversant/get-rules?nodeRef={nodeRef}</url>
+    <url>/metaversant/get-rules?nodeRef={nodeRef}&amp;traverse={traverse}</url>
     <family>Rule Management</family>
     <authentication runas="admin">user</authentication>
     <format default="json"></format>

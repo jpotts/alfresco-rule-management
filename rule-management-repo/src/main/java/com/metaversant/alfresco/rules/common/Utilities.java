@@ -2,7 +2,6 @@ package com.metaversant.alfresco.rules.common;
 
 import org.alfresco.repo.rule.RuleModel;
 import org.alfresco.repo.site.SiteModel;
-import org.alfresco.service.cmr.repository.ChildAssociationRef;
 import org.alfresco.service.cmr.repository.NodeRef;
 import org.alfresco.service.cmr.repository.NodeService;
 import org.alfresco.service.cmr.repository.StoreRef;
@@ -10,7 +9,6 @@ import org.alfresco.service.cmr.search.ResultSet;
 import org.alfresco.service.cmr.search.SearchService;
 import org.alfresco.service.namespace.DynamicNamespacePrefixResolver;
 import org.alfresco.service.namespace.NamespaceService;
-import org.alfresco.service.namespace.RegexQNamePattern;
 import org.apache.log4j.Logger;
 
 import java.util.List;
@@ -44,11 +42,11 @@ public class Utilities {
     }
 
     public static NodeRef getRuleFolder(NodeService nodeService, NodeRef target) {
-        List<ChildAssociationRef> assocs = nodeService.getChildAssocs(target, RuleModel.ASSOC_RULE_FOLDER, RegexQNamePattern.MATCH_ALL);
-        if (assocs.size() <= 0) {
-            return null;
-        }
-        return assocs.get(0).getChildRef();
+        return RuleFolderResolver.resolve(nodeService, target, false);
+    }
+
+    public static NodeRef getRuleFolder(NodeService nodeService, NodeRef target, boolean traverse) {
+        return RuleFolderResolver.resolve(nodeService, target, traverse);
     }
 
     public static void moveRules(NodeService nodeService, NodeRef ruleSource, NodeRef ruleTarget) {
