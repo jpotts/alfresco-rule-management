@@ -1,5 +1,6 @@
 package com.metaversant.alfresco.webscripts;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.metaversant.alfresco.rules.Utilities;
 import com.metaversant.alfresco.rules.model.RuleInfo;
 import com.metaversant.alfresco.rules.transformers.RuleNodeRefToRuleInfoTransformer;
@@ -9,11 +10,12 @@ import org.alfresco.service.cmr.repository.NodeRef;
 import org.alfresco.service.cmr.repository.NodeService;
 import org.alfresco.service.cmr.search.SearchService;
 import org.apache.log4j.Logger;
-import org.springframework.extensions.webscripts.Cache;
-import org.springframework.extensions.webscripts.DeclarativeWebScript;
+import org.springframework.extensions.webscripts.AbstractWebScript;
 import org.springframework.extensions.webscripts.Status;
 import org.springframework.extensions.webscripts.WebScriptRequest;
+import org.springframework.extensions.webscripts.WebScriptResponse;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -22,48 +24,62 @@ import java.util.Map;
 /**
  * Created by jpotts, Metaversant on 2/27/20.
  */
-public class GetRules extends DeclarativeWebScript {
+public class GetRules extends AbstractWebScript {
     private Logger logger = Logger.getLogger(GetRules.class);
 
     // Dependencies
     NodeService nodeService;
     SearchService searchService;
 
-    @Override
-    protected Map<String, Object> executeImpl(WebScriptRequest req, Status status, Cache cache) {
-        Map<String, Object> model = new HashMap<>();
+    public void execute(WebScriptRequest req, WebScriptResponse res) {
+        res.setContentType("application/json");
+        Map<String, Object> response = new HashMap<>();
 
+        // Grab the nodeRef from the request parameter
         String nodeRefStr = req.getParameter("nodeRef");
-        model.put("nodeRef", nodeRefStr);
+        response.put("nodeRef", nodeRefStr);
 
+        // Make sure the specified nodeRef exists before continuing
         NodeRef nodeRef = new NodeRef(nodeRefStr);
         if (!nodeService.exists(nodeRef)) {
-            status.setCode(Status.STATUS_BAD_REQUEST);
-            status.setMessage("Specified nodeRef does not exist: " + nodeRef);
-            return model;
+            res.setStatus(Status.STATUS_BAD_REQUEST);
+            return;
         }
 
+        // Determine if this folder ignores rules inherited from its parent
+        boolean ignoreInheritedRules = nodeService.hasAspect(nodeRef, RuleModel.ASPECT_IGNORE_INHERITED_RULES);
+        response.put("ignoreInheritedRules", ignoreInheritedRules);
+
+        // Get the rule folder for this nodeRef
         NodeRef ruleFolderNodeRef = Utilities.getRuleFolder(nodeService, nodeRef);
-        if (ruleFolderNodeRef != null) {
-            model.put("ruleFolderNodeRef", ruleFolderNodeRef.toString());
-        } else {
+        if (ruleFolderNodeRef == null) {
             // If there is no rule folder there are no rules
-            model.put("rules", null);
-            return model;
+            response.put("rules", null);
+        } else {
+            response.put("ruleFolderNodeRef", ruleFolderNodeRef.toString());
+
+            // For each rule folder, convert the rule folder nodeRef into a POJO and add it to the list
+            List<ChildAssociationRef> childNodeRefList = nodeService.getChildAssocs(ruleFolderNodeRef);
+            ArrayList<RuleInfo> ruleInfoList = new ArrayList<>();
+            for (ChildAssociationRef childRef : childNodeRefList) {
+                NodeRef ruleNodeRef = childRef.getChildRef();
+                if (!nodeService.getType(ruleNodeRef).equals(RuleModel.TYPE_RULE)) {
+                    continue;
+                }
+                RuleInfo ruleInfo = RuleNodeRefToRuleInfoTransformer.transform(nodeService, ruleNodeRef);
+                ruleInfoList.add(ruleInfo);
+            }
+
+            // Set the model and return
+            response.put("rules", ruleInfoList);
         }
 
-        List<ChildAssociationRef> childNodeRefList = nodeService.getChildAssocs(ruleFolderNodeRef);
-        ArrayList<RuleInfo> ruleInfoList = new ArrayList<>();
-        for (ChildAssociationRef childRef : childNodeRefList) {
-            NodeRef ruleNodeRef = childRef.getChildRef();
-            if (!nodeService.getType(ruleNodeRef).equals(RuleModel.TYPE_RULE)) {
-                continue;
-            };
-            RuleInfo ruleInfo = RuleNodeRefToRuleInfoTransformer.transform(nodeService, ruleNodeRef);
-            ruleInfoList.add(ruleInfo);
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            res.getWriter().write(mapper.writeValueAsString(response));
+        } catch (IOException ioe) {
+            logger.error(ioe.getMessage());
         }
-        model.put("rules", ruleInfoList);
-        return model;
     }
 
     public void setNodeService(NodeService nodeService) {
