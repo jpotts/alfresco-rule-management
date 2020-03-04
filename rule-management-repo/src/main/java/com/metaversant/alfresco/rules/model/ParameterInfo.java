@@ -7,7 +7,7 @@ import java.io.Serializable;
  */
 public class ParameterInfo {
     private String name;
-    private Serializable value;
+    private String value;
 
     public String getName() {
         return name;
@@ -17,11 +17,11 @@ public class ParameterInfo {
         this.name = name;
     }
 
-    public Serializable getValue() {
+    public String getValue() {
         return value;
     }
 
-    public void setValue(Serializable value) {
+    public void setValue(String value) {
         this.value = value;
     }
 }
