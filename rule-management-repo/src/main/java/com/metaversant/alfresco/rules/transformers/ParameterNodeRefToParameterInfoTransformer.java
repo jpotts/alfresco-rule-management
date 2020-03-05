@@ -13,6 +13,7 @@ import java.io.Serializable;
 public class ParameterNodeRefToParameterInfoTransformer {
     public static ParameterInfo transform(NodeService nodeService, NodeRef nodeRef) {
         ParameterInfo parameterInfo = new ParameterInfo();
+        parameterInfo.setNodeRef(nodeRef.toString());
         parameterInfo.setName((String) nodeService.getProperty(nodeRef, ActionModel.PROP_PARAMETER_NAME));
         Serializable value = nodeService.getProperty(nodeRef, ActionModel.PROP_PARAMETER_VALUE);
         parameterInfo.setValue(value.toString());

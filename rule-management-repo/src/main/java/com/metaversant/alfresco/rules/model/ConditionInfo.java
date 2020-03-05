@@ -6,8 +6,17 @@ import java.util.ArrayList;
  * Created by jpotts, Metaversant on 2/27/20.
  */
 public class ConditionInfo {
+    private String nodeRef;
     private boolean invert;
     private ArrayList<ParameterInfo> parameters;
+
+    public String getNodeRef() {
+        return nodeRef;
+    }
+
+    public void setNodeRef(String nodeRef) {
+        this.nodeRef = nodeRef;
+    }
 
     public boolean isInvert() {
         return invert;

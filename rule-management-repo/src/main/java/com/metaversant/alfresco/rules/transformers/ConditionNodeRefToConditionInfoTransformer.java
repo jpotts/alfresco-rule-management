@@ -11,6 +11,7 @@ import org.alfresco.service.cmr.repository.NodeService;
 public class ConditionNodeRefToConditionInfoTransformer {
     public static ConditionInfo transform(NodeService nodeService, NodeRef nodeRef) {
         ConditionInfo conditionInfo = new ConditionInfo();
+        conditionInfo.setNodeRef(nodeRef.toString());
         conditionInfo.setInvert((Boolean) nodeService.getProperty(nodeRef, ActionModel.PROP_CONDITION_INVERT));
         conditionInfo.setParameters(ParameterInfoListTransformer.transform(nodeService, nodeRef));
         return conditionInfo;

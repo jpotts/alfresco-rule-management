@@ -24,6 +24,8 @@ public class CompositeActionTransformer {
             CompositeActionInfo compositeActionInfo = new CompositeActionInfo();
             NodeRef caActionNodeRef = childRef.getChildRef();
 
+            compositeActionInfo.setNodeRef(caActionNodeRef.toString());
+
             // Grab the actions for this composite action
             List<ChildAssociationRef> actChildRefList = nodeService.getChildAssocs(caActionNodeRef, ActionModel.ASSOC_ACTIONS, RegexQNamePattern.MATCH_ALL);
             ArrayList<ActionInfo> actionInfoList = new ArrayList<>();

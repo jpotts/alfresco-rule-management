@@ -8,8 +8,17 @@ import java.util.ArrayList;
  * Created by jpotts, Metaversant on 2/27/20.
  */
 public class ActionInfo {
+    private String nodeRef;
     private String definitionName;
     private ArrayList<ParameterInfo> parameters;
+
+    public String getNodeRef() {
+        return nodeRef;
+    }
+
+    public void setNodeRef(String nodeRef) {
+        this.nodeRef = nodeRef;
+    }
 
     public String getDefinitionName() {
         return definitionName;
