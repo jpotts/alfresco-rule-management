@@ -50,10 +50,6 @@ public class GetRules extends AbstractWebScript {
             return;
         }
 
-        // Determine if this folder ignores rules inherited from its parent
-        boolean ignoreInheritedRules = nodeService.hasAspect(nodeRef, RuleModel.ASPECT_IGNORE_INHERITED_RULES);
-        response.put("ignoreInheritedRules", ignoreInheritedRules);
-
         // Get the rule folder for this nodeRef
         NodeRef ruleFolderNodeRef = Utilities.getRuleFolder(nodeService, nodeRef, traverse);
         if (ruleFolderNodeRef == null) {
@@ -80,6 +76,10 @@ public class GetRules extends AbstractWebScript {
             // Get the folder on which these rules are set (It could be different than the nodeRef requested
             NodeRef folderNodeRef = nodeService.getPrimaryParent(ruleFolderNodeRef).getParentRef();
             response.put("nodeRef", folderNodeRef.toString());
+
+            // Determine if this folder ignores rules inherited from its parent
+            boolean ignoreInheritedRules = nodeService.hasAspect(folderNodeRef, RuleModel.ASPECT_IGNORE_INHERITED_RULES);
+            response.put("ignoreInheritedRules", ignoreInheritedRules);
         }
 
         ObjectMapper mapper = new ObjectMapper();
