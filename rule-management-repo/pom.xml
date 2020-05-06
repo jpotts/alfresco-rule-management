@@ -6,7 +6,7 @@
     <artifactId>rule-management-repo</artifactId>
     <version>1.1.0-SNAPSHOT</version>
     <name>rule-management-repo Platform Jar Module - SDK 3</name>
-    <description>Platform JAR Module (to be included in the alfresco.war) - SDK 3</description>
+    <description>Enables rule management features via an API</description>
     <packaging>jar</packaging>
 
     <properties>
