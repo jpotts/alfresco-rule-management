@@ -17,6 +17,7 @@ import org.springframework.extensions.webscripts.WebScriptResponse;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,7 +47,7 @@ public class GetRules extends AbstractWebScript {
         // Make sure the specified nodeRef exists before continuing
         NodeRef nodeRef = new NodeRef(nodeRefStr);
         if (!nodeService.exists(nodeRef)) {
-            res.setStatus(Status.STATUS_BAD_REQUEST);
+            res.setStatus(Status.STATUS_NOT_FOUND);
             return;
         }
 
@@ -54,7 +55,8 @@ public class GetRules extends AbstractWebScript {
         NodeRef ruleFolderNodeRef = Utilities.getRuleFolder(nodeService, nodeRef, traverse);
         if (ruleFolderNodeRef == null) {
             // If there is no rule folder there are no rules
-            response.put("rules", null);
+            response.put("nodeRef", nodeRef.toString());
+            response.put("rules", Collections.EMPTY_LIST);
         } else {
             response.put("ruleFolderNodeRef", ruleFolderNodeRef.toString());
 
