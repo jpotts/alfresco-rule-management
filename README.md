@@ -26,6 +26,7 @@ Hopefully you'll find it useful. There is a lot of functionality remaining that 
 1. Create a REST API to help with these rule management tasks
 1. Modify the Share rule configuration UI with additional rule management functionality
 1. Create a new admin console page for bulk rule management
+1. Provide an API that returns a JSON representation of a rule
 
 All of these goals are works-in-progress, although enough has been done already to make this add-on useful in its current state.
 
@@ -42,8 +43,24 @@ The end points that exist at the moment are:
 * POST /metaversant/link-rule
 * POST /metaversant/share-rule
 * POST /metaversant/move-rule
+* GET /metaversant/get-rules?nodeRef={nodeRef}&traverse={traverseFlag}
 
 See src/test/resources for example JSON.
+
+### Get Rules
+
+The get-rules endpoint is useful when you have scripts or other applications
+that need to know what rules are set on a folder, including their actions and
+parameters. The end point expects a node reference and will return back an array
+of objects describing the rules on that folder.
+
+If a node reference is provided that is "below" the rule folder, such as what
+might happen if you provide a reference to one of the folders that actually
+describes the rule, for example, you can use the traverse flag to tell the API
+to walk up the folder hierarchy until it finds the end-user folder on which the
+rules are actually set. If you don't specify traverse=true then no traversal
+will happen and the response will only contain the rules that are actually
+defined for the node reference provided.
 
 ## Share UI
 
