@@ -2,6 +2,7 @@ package com.metaversant.alfresco.rules.webscripts;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.metaversant.alfresco.rules.common.Utilities;
+import com.metaversant.alfresco.rules.model.ParentNodeRef;
 import com.metaversant.alfresco.rules.model.RuleInfo;
 import com.metaversant.alfresco.rules.transformers.RuleNodeRefToRuleInfoTransformer;
 import org.alfresco.repo.rule.RuleModel;
@@ -82,6 +83,19 @@ public class GetRules extends AbstractWebScript {
             // Determine if this folder ignores rules inherited from its parent
             boolean ignoreInheritedRules = nodeService.hasAspect(folderNodeRef, RuleModel.ASPECT_IGNORE_INHERITED_RULES);
             response.put("ignoreInheritedRules", ignoreInheritedRules);
+
+            // Find list of the rule folder node ref's parents. A rule folder has multiple parents when the rule
+            // folder is being linked to this folder instead of having the rules defined locally to this folder.
+            ArrayList<ParentNodeRef> ruleFolderParents = new ArrayList<>();
+            List<ChildAssociationRef> parentAssocsInfos = nodeService.getParentAssocs(ruleFolderNodeRef);
+            for (ChildAssociationRef parentAssoc : parentAssocsInfos) {
+                ParentNodeRef parent = new ParentNodeRef();
+                parent.setPrimary(parentAssoc.isPrimary());
+                parent.setNodeRef(parentAssoc.getParentRef().toString());
+                ruleFolderParents.add(parent);
+            }
+            response.put("ruleFolderParents", ruleFolderParents);
+            response.put("isLinkedRule", parentAssocsInfos.size() > 1);
         }
 
         ObjectMapper mapper = new ObjectMapper();
